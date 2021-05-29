@@ -5,7 +5,7 @@ import numpy as np
 import zipfile
 from pandas.core.frame import DataFrame
 
-PATH_OUTPUT = ".\\data\\output\\"
+PATH_OUTPUT = "./data/output/"
 HORAS_EXTRAS_HEDO = ["H.E.D.O", "H.E.O.D"]
 HORAS_EXTRAS_HENO = ["H.E.N.O", "H.E.O.N"]
 HORAS_EXTRAS_HEDF = ["H.E.D.F", "H.E.F.D"]
