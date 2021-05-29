@@ -7,7 +7,7 @@ from excel_file import clean_files, generate_txt_file_data_extra_hours, PATH_OUT
 
 load_dotenv()
 
-UPLOAD_FOLDER = '.\\uploads-excel'
+UPLOAD_FOLDER = './uploads-excel'
 ALLOWED_EXTENSIONS = {'xls', 'xlsx', 'xlsm'}
 
 
