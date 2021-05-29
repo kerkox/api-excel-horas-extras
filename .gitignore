@@ -158,4 +158,5 @@ Thumbs.db
 
 # End of https://www.toptal.com/developers/gitignore/api/flask
 
-/uploads-excel
+/uploads-excel/*
+/data/output/*

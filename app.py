@@ -2,7 +2,8 @@ import os
 from dotenv import load_dotenv
 from werkzeug.utils import secure_filename
 from flask import Flask, jsonify, request, send_file
-from excel_file import excel_file
+from flask_cors import CORS
+from excel_file import clean_files, generate_txt_file_data_extra_hours, PATH_OUTPUT
 
 load_dotenv()
 
@@ -11,6 +12,7 @@ ALLOWED_EXTENSIONS = {'xls', 'xlsx', 'xlsm'}
 
 
 app = Flask(__name__)
+CORS(app)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 def allowed_file(filename):
@@ -26,25 +28,35 @@ def hello_world():
 
 
 
-@app.route('/upload-excel', methods=['POST'])
+@app.route('/upload-excel', methods=['POST', 'OPTIONS'])
 def upload_excel():
   if request.method == 'POST':
+    list_files = []
     for file_key in request.files:
       print(f"Filename:  {file_key}")
       file_excel = request.files[file_key]
       if file_excel and allowed_file(file_excel.filename):
         filename = secure_filename(file_excel.filename)
-        file_excel.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+        path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+        file_excel.save(path)
+        list_files.append(path)
 
-      
-  
-  return jsonify({"data":"recibido","request":request.method})
+    code = generate_txt_file_data_extra_hours(list_files)
+    return jsonify({"data": { "code": code}})
+  else:
+    return jsonify({"data":"ERROR","request":request.method})
 
 
 
-@app.route('/download-files', methods=['GET'])
-def download_files():
+@app.route('/download-files/<id_file>', methods=['GET'])
+def download_files(id_file):
   if request.method == 'GET':
-    path = os.path.join(app.config['UPLOAD_FOLDER'], 'test_2.xlsx')
-    print(f"path: {path}")
-    return send_file(path,  as_attachment=True)
+    clean_files()
+    path = os.path.join(PATH_OUTPUT, f'PLANOS-{id_file}.zip')
+    path_final = os.path.join(PATH_OUTPUT, f'PLANOS.zip')
+    os.rename(path, path_final)
+
+    print(f"path: {path_final}")
+    return send_file(path_final,  as_attachment=True)
+    
+    
