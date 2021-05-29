@@ -20,7 +20,7 @@ def allowed_file(filename):
           filename.rsplit('.',1)[1].lower() in ALLOWED_EXTENSIONS
 
 if __name__ == '__main__':
-  app.run(debug=True, port=4000)
+  app.run()
 
 @app.route("/")
 def hello_world():
