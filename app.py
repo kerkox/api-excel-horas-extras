@@ -22,9 +22,9 @@ def allowed_file(filename):
 if __name__ == '__main__':
   app.run()
 
-@app.route("/")
+@app.route("/", methods=['GET'])
 def hello_world():
-  return "<p>Hello, World</p>"
+  return "<h1>Hello, World</h1>"
 
 
 
