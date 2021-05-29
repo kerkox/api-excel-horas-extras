@@ -231,7 +231,7 @@ def show_by_name_data(list_files):
 		print(hora_extra_key)
 
 
-files_name = ['.\\data\\test.xlsx', '.\\data\\test_2.xlsx']
+# files_name = ['.\\data\\test.xlsx', '.\\data\\test_2.xlsx']
 # files_name = ['.\\data\\test_2.xlsx']
 
 
@@ -264,7 +264,7 @@ def clean_files():
 def zip_files_extra_hours_txt():
 	# clean_files()
 	code = uuid.uuid4()
-	zip_path = f"{PATH_OUTPUT}\\PLANOS-{code}.zip"
+	zip_path = f"{PATH_OUTPUT}/PLANOS-{code}.zip"
 	zip_txt_files = zipfile.ZipFile(zip_path, "w")
 	for folder, subfolders, files in os.walk(PATH_OUTPUT):
 		for file in files:
