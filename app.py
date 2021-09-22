@@ -1,7 +1,7 @@
 import os
 from dotenv import load_dotenv
 from werkzeug.utils import secure_filename
-from flask import Flask, jsonify, request, send_file
+from flask import Flask, jsonify, request, send_file, make_response
 from flask_cors import CORS
 from excel_file import clean_files, generate_txt_file_data_extra_hours, PATH_OUTPUT
 
@@ -13,6 +13,7 @@ ALLOWED_EXTENSIONS = {'xls', 'xlsx', 'xlsm'}
 
 app = Flask(__name__)
 CORS(app)
+app.config['CORS_HEADERS'] = 'Content-Type'
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 def allowed_file(filename):
@@ -30,6 +31,8 @@ def hello_world():
 
 @app.route('/upload-excel', methods=['POST', 'OPTIONS'])
 def upload_excel():
+  if request.method == "OPTIONS":  # CORS preflight
+      return _build_cors_preflight_response()
   if request.method == 'POST':
     list_files = []
     for file_key in request.files:
@@ -42,9 +45,9 @@ def upload_excel():
         list_files.append(path)
 
     code = generate_txt_file_data_extra_hours(list_files)
-    return jsonify({"data": { "code": code}})
+    return _corsify_actual_response(jsonify({"data": {"code": code}}))
   else:
-    return jsonify({"data":"ERROR","request":request.method})
+    return _corsify_actual_response(jsonify({"data":"ERROR","request":request.method}))
 
 
 
@@ -58,5 +61,16 @@ def download_files(id_file):
 
     print(f"path: {path_final}")
     return send_file(path_final,  as_attachment=True)
+
+
+def _build_cors_preflight_response():
+    response = make_response()
+    response.headers.add("Access-Control-Allow-Origin", "*")
+    response.headers.add('Access-Control-Allow-Headers', "*")
+    response.headers.add('Access-Control-Allow-Methods', "*")
+    return response
     
     
+def _corsify_actual_response(response):
+    response.headers.add("Access-Control-Allow-Origin", "*")
+    return response
