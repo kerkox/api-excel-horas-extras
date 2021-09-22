@@ -88,28 +88,32 @@ def is_columna_valida_horas_extras(lista_columna):
 	return constantes_encotradas == 1
 
 
+# Se recorre cada columna recibida para sumar los valores, ya que viene sin total
 def obtener_horas_extras_final(lista_columna, index_start, data, index_data):
 	value_max = 0
-	index_max = -1
+	valor_total_columna = 0
 	for index in range(index_start, len(lista_columna)):
 		try:
-			if float(lista_columna[index]) > value_max:
-				value_max = float(lista_columna[index])
-				index_max = index
+			valor_actual = float(lista_columna[index])
+			if not np.isnan(valor_actual):
+				valor_total_columna += valor_actual
 		except ValueError:
 			continue
+	value_max = valor_total_columna
 	# print(f"Columna value_max:{value_max} index_max:{index_max}")
 	# print(lista_columna)
-	row = data[index_max, :]
-	for texto_invalido in TEXTOS_FILA_INVALIDA:
-		if texto_invalido in row:
-			index_max -= 1
-			value_max = float(lista_columna[index_max])
-			break
+
+	# row = data[index_max, :]
+	# for texto_invalido in TEXTOS_FILA_INVALIDA:
+	# 	if texto_invalido in row:
+	# 		index_max -= 1
+	# 		value_max = float(lista_columna[index_max])
+	# 		break
+
 	# print(f"Ajustes: value_max:{value_max} index_max:{index_max} ")
 	# Se valida que la fila npo contenta el texto total horas extras
 
-	return value_max, index_max
+	return value_max
 
 
 # Recibe una columna de datos de numpy array
@@ -136,7 +140,7 @@ def obtener_info_horas_extras(columna_data, data, index_data):
 	if index >= 0:
 		# print("columna original donde se encontro: ")
 		# print(columna_data)
-		value_max, index_max = obtener_horas_extras_final(
+		value_max = obtener_horas_extras_final(
 			lista_columna, index+1, data, index_data)
 		# print(f"value_max: {value_max}, index_max: {index_max}")
 		horas_extras[HORAS_EXTRAS_CONSTANTES_ARRAY[0]] = value_max
@@ -146,19 +150,16 @@ def obtener_info_horas_extras(columna_data, data, index_data):
 			# print("--"*10)
 			# print(f"COLUMNA {column_add+1}: ")
 			# print(columna)
-			if index_max == -1:
-				value_max, index_max = obtener_horas_extras_final(
-					columna, index+1, data, index_data)
-			try:
-				horas_extras[HORAS_EXTRAS_CONSTANTES_ARRAY[column_add]] = float(
-					columna[index_max])
-			except ValueError:
-				horas_extras[HORAS_EXTRAS_CONSTANTES_ARRAY[column_add]] = 0
-				index_max = -1
+			value_max = obtener_horas_extras_final(
+                            columna, index+1, data, index_data)
+			horas_extras[HORAS_EXTRAS_CONSTANTES_ARRAY[column_add]] = value_max
 
 	return horas_extras
 
 
+# TODO: validar con el ultimo reguistro de la columna ITEM
+# el indice maximo hasta donde debe de sumar
+# se puede usar el numero maximo registrado para obtener el indice
 def obtener_info_horas_persona(excel_data: DataFrame):
 	data = excel_data.to_numpy()
 	info = {}
@@ -232,7 +233,7 @@ def show_by_name_data(list_files):
 
 
 # files_name = ['.\\data\\test.xlsx', '.\\data\\test_2.xlsx']
-# files_name = ['.\\data\\test_2.xlsx']
+files_name = ['.\\data\\test.xls']
 
 
 def write_txt_file_by_type_extra_hour(list_data, name_file):
@@ -287,4 +288,4 @@ def show_console_data_result(list_files):
 
 # show_console_data_result(files_name)
 # show_by_name_data(files_name)
-# generate_txt_file_data_extra_hours(files_name)
+generate_txt_file_data_extra_hours(files_name)
