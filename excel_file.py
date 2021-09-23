@@ -233,7 +233,7 @@ def show_by_name_data(list_files):
 
 
 # files_name = ['.\\data\\test.xlsx', '.\\data\\test_2.xlsx']
-files_name = ['.\\data\\test.xls']
+# files_name = ['.\\data\\test.xls']
 
 
 def write_txt_file_by_type_extra_hour(list_data, name_file):
@@ -288,4 +288,4 @@ def show_console_data_result(list_files):
 
 # show_console_data_result(files_name)
 # show_by_name_data(files_name)
-generate_txt_file_data_extra_hours(files_name)
+# generate_txt_file_data_extra_hours(files_name)
