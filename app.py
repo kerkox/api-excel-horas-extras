@@ -29,7 +29,7 @@ def hello_world():
 
 
 @app.route("/health-check", methods=['GET'])
-def hello_world():
+def health_check():
   return _corsify_actual_response(jsonify({"status":"OK"}))
 
 
