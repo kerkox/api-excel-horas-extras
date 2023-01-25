@@ -28,6 +28,10 @@ def hello_world():
   return "<h1>Hello, World</h1>"
 
 
+@app.route("/health-check", methods=['GET'])
+def hello_world():
+  return _corsify_actual_response(jsonify({"status":"OK"}))
+
 
 @app.route('/upload-excel', methods=['POST', 'OPTIONS'])
 def upload_excel():
