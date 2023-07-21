@@ -85,6 +85,6 @@ def _corsify_actual_response(response):
 def clean_files_path(files_errors):
   clean_files_errors = []  
   for file_error in files_errors:
-    clean_path = re.sub(rf'{UPLOAD_FOLDER}(\\)?', '', file_error)
+    clean_path = re.sub(rf'{UPLOAD_FOLDER}(\\)*(/)*', '', file_error)
     clean_files_errors.append(clean_path)
   return clean_files_errors
