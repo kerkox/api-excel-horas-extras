@@ -1,4 +1,5 @@
 import os
+import re
 from dotenv import load_dotenv
 from werkzeug.utils import secure_filename
 from flask import Flask, jsonify, request, send_file, make_response
@@ -48,8 +49,9 @@ def upload_excel():
         file_excel.save(path)
         list_files.append(path)
 
-    code = generate_txt_file_data_extra_hours(list_files)
-    return _corsify_actual_response(jsonify({"data": {"code": code}}))
+    (code, file_errors) = generate_txt_file_data_extra_hours(list_files)
+    clean_files_errors = clean_files_path(file_errors)
+    return _corsify_actual_response(jsonify({"code": code, "file_errors": clean_files_errors}))
   else:
     return _corsify_actual_response(jsonify({"data":"ERROR","request":request.method}))
 
@@ -78,3 +80,11 @@ def _build_cors_preflight_response():
 def _corsify_actual_response(response):
     response.headers.add("Access-Control-Allow-Origin", "*")
     return response
+
+
+def clean_files_path(files_errors):
+  clean_files_errors = []  
+  for file_error in files_errors:
+    clean_path = re.sub(rf'{UPLOAD_FOLDER}(\\)?', '', file_error)
+    clean_files_errors.append(clean_path)
+  return clean_files_errors

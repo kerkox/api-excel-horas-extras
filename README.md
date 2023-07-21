@@ -6,12 +6,14 @@ Este proyecto esta pensado para extrar informacion de varios archivos de excel c
 
 se debe de crear el entorno virtual para el manejo de las dependencias
 
+`venv -m .venv`
+
 y luego entrar en el entorno
 
 
 se debe de ejecutar primero el comando para importar las dependencias
 
-`pip install -m requirements.txt`
+`pip install -r requirements.txt`
 
 
 despues de esto ahi si se ejecuta el comando:

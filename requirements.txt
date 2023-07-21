@@ -4,7 +4,7 @@ click==8.0.1
 colorama==0.4.4
 decorator==5.0.9
 et-xmlfile==1.1.0
-Flask==2.0.1
+Flask
 Flask-Cors==3.0.10
 ipykernel==5.5.5
 ipython==7.23.1
@@ -16,9 +16,9 @@ jupyter-client==6.1.12
 jupyter-core==4.7.1
 MarkupSafe==2.0.1
 matplotlib-inline==0.1.2
-numpy==1.20.3
+numpy==1.24.2
 openpyxl==3.0.7
-pandas==1.2.4
+pandas
 parso==0.8.2
 pickleshare==0.7.5
 prompt-toolkit==3.0.18
@@ -27,7 +27,7 @@ Pygments==2.9.0
 python-dateutil==2.8.1
 python-dotenv==0.17.1
 pytz==2021.1
-pyzmq==22.0.3
+pyzmq
 six==1.16.0
 toml==0.10.2
 tornado==6.1
